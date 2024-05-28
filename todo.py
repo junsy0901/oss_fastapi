@@ -4,9 +4,12 @@ from model import Todo
 todo_router = APIRouter()
 
 todo_list = []
+todo_counter = 0
 
 @todo_router.post("/todo")
 async def add_todo(todo: Todo) -> dict:
+    global todo_counter
+    todo.id = todo_counter = todo_counter+1
     todo_list.append(todo)
     return {
         "msg" : "todo added successfully"
@@ -24,3 +27,11 @@ async def get_single_todo(todo_id: int = Path(..., title="the Id of the todo to 
         if todo.id ==todo_id:
             return { "todo": todo}
         return {"msg":"todo sith supplied Id doesn't exist"}
+    
+@todo_router.delete("/todo/{todo_id}") 
+async def delete_todo(todo_id: int = Path(..., title="the ID of the todo to delete")) -> dict: 
+    for index, todo in enumerate(todo_list): 
+        if todo.id == todo_id: 
+            del todo_list[index] 
+            return {"msg": f"Todo with ID {todo_id} deleted successfully"} 
+    return {"msg": "Todo with supplied ID doesn't exist"}
