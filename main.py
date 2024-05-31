@@ -5,7 +5,7 @@ import uvicorn
 
 app = FastAPI()
 
-origins = ["http://127.0.0.1:5500", "http://50.19.226.105"]
+origins = ["http://127.0.0.1:5501", "http://50.19.226.105"] # frontend 접속 주소를 지정해야 접근할 수 있음
 app.add_middleware( 
     CORSMiddleware, 
     allow_origins=origins, 
